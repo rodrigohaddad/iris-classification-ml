@@ -1,7 +1,5 @@
-"""Argument definitions for model training code in `trainer.model`."""
-
 import argparse
-import model
+from trainer import model
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -32,4 +30,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     hparams = args.__dict__
 
-    model.train_and_evaluate(hparams)
+    model = model.Model(hparams)
+    model.train_and_evaluate()
