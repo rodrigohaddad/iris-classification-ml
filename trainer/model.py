@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 from keras import callbacks, models, layers
 
-from iris.trainer.file_manipulation import load_df
+from trainer.file_manipulation import load_df
 
 logging.info(tf.version.VERSION)
 
