@@ -1,0 +1,5 @@
+google-cloud-aiplatform
+tensorflow==2.14.0
+numpy==1.23.5
+setuptools==60.2.0
+python-dotenv==1.0.0

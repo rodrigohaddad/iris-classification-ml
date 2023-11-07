@@ -1,0 +1,11 @@
+{
+  "instances": [
+    {
+      "dropoff_longitude": [-73.950238],
+      "passenger_count": [2],
+      "dropoff_latitude": [40.779572],
+      "pickup_latitude": [40.779587],
+      "pickup_longitude": [-73.950218]
+    }
+  ]
+}
