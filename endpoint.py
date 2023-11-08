@@ -3,13 +3,11 @@ import os
 from dotenv import load_dotenv
 from google.cloud import aiplatform
 from google.cloud.aiplatform import Endpoint
-from google.cloud.aiplatform.explain.metadata.tf.v2 import \
-    saved_model_metadata_builder
 
 load_dotenv()
 
-endpoint = "projects/900832571968/locations/southamerica-east1/endpoints/3763162108947070976"
-
+MODEL = 'projects/1079154697342/locations/southamerica-east1/models/6917054038617882624/operations/3611575739360477184'
+ENDPOINT = 'projects/1079154697342/locations/southamerica-east1/endpoints/7775447164469116928/operations/792322372626546688'
 
 class AIEndpoint:
     def __init__(self, project: str, location: str):
@@ -17,21 +15,8 @@ class AIEndpoint:
         self.location = location
         aiplatform.init(project=self.project, location=self.location)
 
-        self.explain_params, self.explain_meta = self.get_explain_config()
-
-    def get_explain_config(self):
-        params = {"sampled_shapley_attribution": {"path_count": 10}}
-        explain_params = aiplatform.explain.ExplanationParameters(params)
-
-        builder = saved_model_metadata_builder.SavedModelMetadataBuilder(
-            model_path=f"{os.getenv('MODEL_OUT_DIR')}/savedmodel",
-            outputs_to_explain=['fare']
-        )
-        explain_meta = builder.get_metadata_protobuf()
-
-        return explain_params, explain_meta
-
-    def deploy_endpoint(self, endpoint_name) -> Endpoint:
+    @staticmethod
+    def deploy_endpoint(endpoint_name: str) -> Endpoint:
         try:
             model = aiplatform.Model.list()[0]
         except Exception as e:
@@ -45,15 +30,14 @@ class AIEndpoint:
             traffic_percentage=100,
             machine_type=os.getenv('MACHINE_TYPE_SERVING'),
             min_replica_count=1,
-            max_replica_count=1,
-            explanation_parameters=self.explain_params,
-            explanation_metadata=self.explain_meta,
-
+            max_replica_count=1
         )
+
         return endpoint
 
 
 if __name__ == '__main__':
-    endpoint = AIEndpoint(project=os.getenv('PROJECT'),
-                          location=os.getenv('REGION'))
-    endpoint.deploy_endpoint(endpoint_name='taxi-fare-endpoint')
+    ai_endpoint = AIEndpoint(project=os.getenv('PROJECT'),
+                             location=os.getenv('REGION'))
+    ai_endpoint.deploy_endpoint(endpoint_name='isis-endpoint')
+

@@ -16,7 +16,7 @@ jobs:
       - name: Cloud Functions Deploy
         uses: google-github-actions/deploy-cloud-functions@v0.1.2
         with:
-          credentials: ${{ secrets.GCP_SA_KEY }}
+          # credentials: ${{ secrets.GCP_SA_KEY }}
           name: python-hello-world-cf
           description: Test python cloud function # nullable
           project_id: iris-classification-404414
@@ -27,7 +27,6 @@ jobs:
           # runtime to use for the function
           runtime: python39
           # the function execution timeout
-          timeout: 60
           # the maximum number of instances for the function.
           max_instances: 1
           # optional configs, see google-cloud-actions/deploy-cloud-functions for full reference
