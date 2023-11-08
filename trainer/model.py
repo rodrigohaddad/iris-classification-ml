@@ -13,7 +13,6 @@ class Model:
     def __init__(self, hparams: dict):
         self.lr = hparams['lr']
         self.epochs = hparams['epochs']
-        self.batch_size = hparams['batch_size']
 
         self.output_dir = hparams['output_dir']
         self.eval_data_path = hparams['eval_data_path']
@@ -82,7 +81,6 @@ class Model:
 if __name__ == "__main__":
     model = Model({'lr': 0.001,
                    'epochs': 15,
-                   'batch_size': 10,
                    'num_examples_to_train_on': 100,
                    'output_dir': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\output',
                    'eval_data_path': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\eval\\eval.csv',

@@ -4,10 +4,10 @@ from trainer import model
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--batch_size",
+        "--epochs",
         help="Batch size for training steps",
         type=int,
-        default=32,
+        default=15,
     )
     parser.add_argument(
         "--eval_data_path",
