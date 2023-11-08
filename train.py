@@ -39,7 +39,6 @@ class Train:
                         "args": [
                             f"--eval_data_path={os.getenv('EVAL_DIR')}",
                             f"--train_data_path={os.getenv('TRAIN_DIR')}",
-                            f"--bucket_name={os.getenv('BUCKET')}",
                             f"--output_dir={os.getenv('OUT_DIR')}",
                             f"--epochs={TrainingArgs.epochs}",
                             f"--lr={TrainingArgs.lr}",
