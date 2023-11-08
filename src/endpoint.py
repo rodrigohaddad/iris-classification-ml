@@ -8,6 +8,10 @@ from google.cloud.aiplatform.explain.metadata.tf.v2 import \
 
 load_dotenv()
 
+MODEL = 'projects/1079154697342/locations/southamerica-east1/models/6917054038617882624/operations/3611575739360477184'
+ENDPOINT = 'projects/1079154697342/locations/southamerica-east1/endpoints/7775447164469116928/operations/792322372626546688'
+
+
 class AIEndpoint:
     def __init__(self):
         self.project = os.getenv('PROJECT')

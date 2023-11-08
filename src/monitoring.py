@@ -15,23 +15,22 @@ MONITOR_INTERVAL = 1
 DEFAULT_THRESHOLD_VALUE = 0.001
 
 THRESHOLDS = {
-    "sepal length": DEFAULT_THRESHOLD_VALUE,
-    "petal width": DEFAULT_THRESHOLD_VALUE,
+    "passenger_count": DEFAULT_THRESHOLD_VALUE,
+    "dropoff_latitude": DEFAULT_THRESHOLD_VALUE,
 }
 
+
 class Monitoring:
-    def __init__(self, endpoint=None):
+    def __init__(self):
         self.project = os.getenv('PROJECT')
         self.location = os.getenv('REGION')
         aiplatform.init(project=self.project, location=self.location)
-        self.endpoint = endpoint
-        if not endpoint:
-            endpoint_name = "projects/900832571968/locations/southamerica-east1/endpoints/3763162108947070976"
-            self.endpoint = aiplatform.Endpoint(endpoint_name=endpoint_name)
+        endpoint_name = "projects/900832571968/locations/southamerica-east1/endpoints/3763162108947070976"
+        self.endpoint = aiplatform.Endpoint(endpoint_name=endpoint_name)
 
     def config_monitoring(self, target):
         skew_config = model_monitoring.SkewDetectionConfig(
-            data_source=f"{os.getenv('TRAIN_DIR')}",
+            data_source=f"{os.getenv('OUT_DIR')}/taxi-train-000000000000.csv",
             skew_thresholds=THRESHOLDS,
             attribute_skew_thresholds=THRESHOLDS,
             target_field=target,

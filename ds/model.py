@@ -19,7 +19,12 @@ class Model:
         self.train_data_path = hparams['train_data_path']
 
     @staticmethod
-    def transform(trainds, evalds):
+    def normalize_column(column):
+        min_val = column.min()
+        max_val = column.max()
+        return (column - min_val) / (max_val - min_val)
+
+    def transform(self, trainds, evalds):
         _, y_train = np.unique(trainds['class'], return_inverse=True)
         _, y_val = np.unique(evalds['class'], return_inverse=True)
         y_train = tf.keras.utils.to_categorical(y_train, num_classes=3)
@@ -27,14 +32,18 @@ class Model:
 
         x_train = trainds.drop('class', axis=1)
         x_val = evalds.drop('class', axis=1)
+
+        x_train = x_train.apply(self.normalize_column)
+        x_val = x_val.apply(self.normalize_column)
+
         return (x_train, x_val), (y_train, y_val)
 
     def build_nn(self) -> models:
         nn = tf.keras.Sequential([
             layers.Input(shape=(4,)),
-            layers.Dense(64, activation='relu'),
+            layers.Dense(128, activation='relu'),
             layers.Flatten(),
-            layers.Dense(64, activation='relu'),
+            layers.Dense(128, activation='relu'),
             layers.Dense(3, activation='softmax')
         ])
 
@@ -70,6 +79,7 @@ class Model:
             y=y[0],
             validation_data=(x[1], y[1]),
             epochs=self.epochs,
+            batch_size=20,
             verbose=2,
             callbacks=[checkpoint_cb, tensorboard_cb],
         )

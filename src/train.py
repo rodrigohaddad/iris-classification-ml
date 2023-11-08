@@ -52,7 +52,7 @@ class Train:
 
         if tune_hyperparameters:
             job = self.add_hyperparameter_tuning(display_name, job)
-        job.submit()
+        job.run()
 
     @staticmethod
     def add_hyperparameter_tuning(display_name, job):
