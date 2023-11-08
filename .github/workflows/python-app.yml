@@ -16,7 +16,7 @@ jobs:
       - name: Cloud Functions Deploy
         uses: google-github-actions/deploy-cloud-functions@v0.1.2
         with:
-          credentials: ${{ secrets.GCP_SA_KEY }}
+          credentials: $GCP_SA_KEY
           name: python-hello-world-cf
           description: Test python cloud function # nullable
           project_id: iris-classification-404414
