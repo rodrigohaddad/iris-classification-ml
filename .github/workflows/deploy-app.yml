@@ -17,13 +17,13 @@ jobs:
         uses: google-github-actions/deploy-cloud-functions@v0.1.2
         with:
           credentials: ${{ secrets.GCP_SA_KEY }}
-          name: python-hello-world-cf
+          name: function-2
           description: Test python cloud function # nullable
           project_id: iris-classification-404414
           region: southamerica-east1
           source_dir: src
           # name of our function in our main.py file, defaults to the resource name suffix 
-          entry_point: hello_world
+          entry_point: pipeline
           # runtime to use for the function
           runtime: python39
           # the function execution timeout
