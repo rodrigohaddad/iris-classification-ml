@@ -25,10 +25,12 @@ class Model:
         return (column - min_val) / (max_val - min_val)
 
     def transform(self, trainds, evalds):
-        _, y_train = np.unique(trainds['class'], return_inverse=True)
-        _, y_val = np.unique(evalds['class'], return_inverse=True)
-        y_train = tf.keras.utils.to_categorical(y_train, num_classes=3)
-        y_val = tf.keras.utils.to_categorical(y_val, num_classes=3)
+        classes, y_train = np.unique(trainds['class'], return_inverse=True)
+        mapping_dict = {string: i for i, string in enumerate(sorted(classes))}
+        y_val = evalds['class'].map(mapping_dict)
+
+        y_train = tf.keras.utils.to_categorical(y_train, num_classes=len(classes))
+        y_val = tf.keras.utils.to_categorical(y_val, num_classes=len(classes))
 
         x_train = trainds.drop('class', axis=1)
         x_val = evalds.drop('class', axis=1)
