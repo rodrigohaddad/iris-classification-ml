@@ -1,17 +1,45 @@
+import os
 import unittest
+import shutil
+
+import numpy as np
+import tensorflow as tf
+
+from trainer.model import Model
 
 
-class UserInfoTestCase(unittest.TestCase):
+class ModelTestCase(unittest.TestCase):
     def setUp(self):
-        pass
+        self.current_directory = os.getcwd()
+        self.output = os.path.join(self.current_directory, 'output')
+        self.eval = os.path.join(self.current_directory, 'input', 'eval.csv')
+        self.train = os.path.join(self.current_directory, 'input', 'train.csv')
+        self.saved_model = os.path.join(self.current_directory, 'output', 'savedmodel')
+
+        shutil.rmtree(self.output)
+        os.mkdir(self.output)
 
     def test_total_same_name_per_country(self):
-        response = self.app.get('/total_same_name_per_country')
-        data = response.get_json()
+        model = Model({'lr': 0.001,
+                       'epochs': 15,
+                       'batch_size': 20,
+                       'output_dir': self.output,
+                       'eval_data_path': self.eval,
+                       'train_data_path': self.train,
+                       },
+                      )
+        model.train_and_evaluate()
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(data, Mock.response_total_same_name_per_country())
+        trained_model = tf.saved_model.load(self.saved_model)
 
+        r = trained_model(
+            np.array([
+                [6.3, 2.9, 5.6, 1.8],
+                [6.5, 3.0, 5.8, 2.2],
+                [7.6, 3.0, 6.6, 2.1],
+                [4.9, 2.5, 4.5, 1.7]
+            ], dtype=np.float32)
+        )
 
-if __name__ == '__main__':
-    unittest.main()
+        r = np.argmax(r, axis=-1)
+        assert (r & [2, 2, 2, 2]).all()

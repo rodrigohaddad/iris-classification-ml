@@ -1,33 +1,30 @@
-name: Deployment
+name: App Build and Test
 
-# on commit push, run job
-on: [ push ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
-  job_id:
-    runs-on: 'ubuntu-latest'
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  build:
+
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: 'actions/checkout@v4'
-
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
       with:
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-
-    - id: 'deploy'
-      uses: 'google-github-actions/deploy-cloud-functions@v1'
-      with:
-        name: 'my-function'
-        runtime: 'python39'
-        project_id: 'iris-classification-404414'
-        region: 'southamerica-east1'
-        source_dir: 'src'
-
-    # Example of using the output
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+        python-version: "3.9"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Test with unittest
+      run: |
+        export TESTING=True
+        python -m unittest

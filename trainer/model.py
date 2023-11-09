@@ -3,8 +3,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from keras import callbacks, models, layers
-
-from trainer.file_manipulation import load_df
+from ds.file_manipulation import load_df
 
 logging.info(tf.version.VERSION)
 
@@ -13,13 +12,19 @@ class Model:
     def __init__(self, hparams: dict):
         self.lr = hparams['lr']
         self.epochs = hparams['epochs']
+        self.batch_size = hparams['batch_size']
 
         self.output_dir = hparams['output_dir']
         self.eval_data_path = hparams['eval_data_path']
         self.train_data_path = hparams['train_data_path']
 
     @staticmethod
-    def transform(trainds, evalds):
+    def normalize_column(column):
+        min_val = column.min()
+        max_val = column.max()
+        return (column - min_val) / (max_val - min_val)
+
+    def transform(self, trainds, evalds):
         _, y_train = np.unique(trainds['class'], return_inverse=True)
         _, y_val = np.unique(evalds['class'], return_inverse=True)
         y_train = tf.keras.utils.to_categorical(y_train, num_classes=3)
@@ -27,14 +32,18 @@ class Model:
 
         x_train = trainds.drop('class', axis=1)
         x_val = evalds.drop('class', axis=1)
+
+        x_train = x_train.apply(self.normalize_column)
+        x_val = x_val.apply(self.normalize_column)
+
         return (x_train, x_val), (y_train, y_val)
 
     def build_nn(self) -> models:
         nn = tf.keras.Sequential([
-            layers.Input(shape=(4,)),
-            layers.Dense(64, activation='relu'),
+            layers.Input(shape=(4, 1)),
+            layers.Dense(128, activation='relu'),
             layers.Flatten(),
-            layers.Dense(64, activation='relu'),
+            layers.Dense(128, activation='relu'),
             layers.Dense(3, activation='softmax')
         ])
 
@@ -70,6 +79,7 @@ class Model:
             y=y[0],
             validation_data=(x[1], y[1]),
             epochs=self.epochs,
+            batch_size=self.batch_size,
             verbose=2,
             callbacks=[checkpoint_cb, tensorboard_cb],
         )
@@ -81,6 +91,7 @@ class Model:
 if __name__ == "__main__":
     model = Model({'lr': 0.001,
                    'epochs': 15,
+                   'batch_size': 15,
                    'num_examples_to_train_on': 100,
                    'output_dir': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\output',
                    'eval_data_path': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\eval\\eval.csv',

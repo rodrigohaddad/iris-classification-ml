@@ -40,7 +40,7 @@ class Model:
 
     def build_nn(self) -> models:
         nn = tf.keras.Sequential([
-            layers.Input(shape=(4,)),
+            layers.Input(shape=(4, 1)),
             layers.Dense(128, activation='relu'),
             layers.Flatten(),
             layers.Dense(128, activation='relu'),
@@ -79,7 +79,7 @@ class Model:
             y=y[0],
             validation_data=(x[1], y[1]),
             epochs=self.epochs,
-            batch_size=20,
+            batch_size=self.batch_size,
             verbose=2,
             callbacks=[checkpoint_cb, tensorboard_cb],
         )
@@ -91,7 +91,7 @@ class Model:
 if __name__ == "__main__":
     model = Model({'lr': 0.001,
                    'epochs': 15,
-                   'batch_size': 10,
+                   'batch_size': 15,
                    'num_examples_to_train_on': 100,
                    'output_dir': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\output',
                    'eval_data_path': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\eval\\eval.csv',
