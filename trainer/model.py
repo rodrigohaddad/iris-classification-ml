@@ -2,8 +2,8 @@ import logging
 import os
 import numpy as np
 import tensorflow as tf
-from keras import callbacks, models, layers
-from ds.file_manipulation import load_df
+import pandas as pd
+from keras import callbacks, layers
 
 logging.info(tf.version.VERSION)
 
@@ -38,7 +38,7 @@ class Model:
 
         return (x_train, x_val), (y_train, y_val)
 
-    def build_nn(self) -> models:
+    def build_nn(self):
         nn = tf.keras.Sequential([
             layers.Input(shape=(4,)),
             layers.Dense(128, activation='relu'),
@@ -61,8 +61,8 @@ class Model:
         if tf.io.gfile.exists(self.output_dir):
             tf.io.gfile.rmtree(self.output_dir)
 
-        trainds = load_df(self.train_data_path)
-        evalds = load_df(self.eval_data_path)
+        trainds = pd.read_csv(self.train_data_path)
+        evalds = pd.read_csv(self.eval_data_path)
 
         x, y = self.transform(trainds, evalds)
 
@@ -86,16 +86,3 @@ class Model:
 
         nn.save(model_export_path)
         return history
-
-
-if __name__ == "__main__":
-    model = Model({'lr': 0.001,
-                   'epochs': 15,
-                   'batch_size': 15,
-                   'num_examples_to_train_on': 100,
-                   'output_dir': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\output',
-                   'eval_data_path': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\eval\\eval.csv',
-                   'train_data_path': 'C:\\Users\\rodri\\Documents\\projects\\iris-classification-ml\\ds\\local_data\\train\\train.csv'
-                   },
-                   )
-    model.train_and_evaluate()

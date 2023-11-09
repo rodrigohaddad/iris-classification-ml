@@ -1,3 +1,7 @@
-python-dotenv==1.0.0
-functions-framework==3.*
 google-cloud-aiplatform
+tensorflow==2.14.0
+numpy==1.23.5
+setuptools==60.2.0
+python-dotenv==1.0.0
+pandas==2.1.2
+functions-framework==3.*

@@ -4,33 +4,24 @@ from dotenv import load_dotenv
 from google.cloud.aiplatform import model_monitoring
 import google.cloud.aiplatform as aiplatform
 
+from src.constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
+
 load_dotenv()
-
-# Sampling rate (optional, default=.8)
-LOG_SAMPLE_RATE = 0.8
-
-# Monitoring Interval in hours (optional, default=1).
-MONITOR_INTERVAL = 1
-
-DEFAULT_THRESHOLD_VALUE = 0.001
-
-THRESHOLDS = {
-    "passenger_count": DEFAULT_THRESHOLD_VALUE,
-    "dropoff_latitude": DEFAULT_THRESHOLD_VALUE,
-}
 
 
 class Monitoring:
-    def __init__(self):
+    def __init__(self, endpoint=None):
         self.project = os.getenv('PROJECT')
         self.location = os.getenv('REGION')
         aiplatform.init(project=self.project, location=self.location)
-        endpoint_name = "projects/900832571968/locations/southamerica-east1/endpoints/3763162108947070976"
-        self.endpoint = aiplatform.Endpoint(endpoint_name=endpoint_name)
+        self.endpoint = endpoint
+        if not endpoint:
+            endpoint_name = os.getenv('ENDPOINT')
+            self.endpoint = aiplatform.Endpoint(endpoint_name=endpoint_name)
 
-    def config_monitoring(self, target):
+    def config_monitoring(self, target: str):
         skew_config = model_monitoring.SkewDetectionConfig(
-            data_source=f"{os.getenv('OUT_DIR')}/taxi-train-000000000000.csv",
+            data_source=f"{os.getenv('TRAIN_DIR')}",
             skew_thresholds=THRESHOLDS,
             attribute_skew_thresholds=THRESHOLDS,
             target_field=target,
@@ -73,10 +64,3 @@ class Monitoring:
         )
 
         return job
-
-
-if __name__ == '__main__':
-    # mdm = aiplatform.ModelDeploymentMonitoringJob('7865908384132759552', os.getenv('PROJECT'), os.getenv('REGION'))
-    # mdm.delete()
-    monitoring = Monitoring()
-    monitoring.config_monitoring(target='iris')

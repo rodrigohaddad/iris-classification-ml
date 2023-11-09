@@ -5,9 +5,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--epochs",
-        help="Batch size for training steps",
+        help="Number of epochs",
         type=int,
         default=15,
+    )
+    parser.add_argument(
+        "--batch_size",
+        help="Batch size for training steps",
+        type=int,
+        default=20,
     )
     parser.add_argument(
         "--eval_data_path",
@@ -15,7 +21,7 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "--lr", help="learning rate for optimizer", type=float, default=0.001
+        "--lr", help="Learning rate for optimizer", type=float, default=0.001
     )
     parser.add_argument(
         "--output_dir",

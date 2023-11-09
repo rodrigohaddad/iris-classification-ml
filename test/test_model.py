@@ -11,10 +11,15 @@ from trainer.model import Model
 class TestModelCase(unittest.TestCase):
     def setUp(self):
         self.current_directory = os.getcwd()
-        self.output = os.path.join(self.current_directory, 'test', 'output')
-        self.eval = os.path.join(self.current_directory, 'test', 'input', 'eval.csv')
-        self.train = os.path.join(self.current_directory, 'test', 'input', 'train.csv')
-        self.saved_model = os.path.join(self.current_directory, 'test', 'output', 'savedmodel')
+        # self.output = os.path.join(self.current_directory, 'test', 'output')
+        # self.eval = os.path.join(self.current_directory, 'test', 'input', 'eval.csv')
+        # self.train = os.path.join(self.current_directory, 'test', 'input', 'train.csv')
+        # self.saved_model = os.path.join(self.current_directory, 'test', 'output', 'savedmodel')
+
+        self.output = os.path.join(self.current_directory, 'output')
+        self.eval = os.path.join(self.current_directory, 'input', 'eval.csv')
+        self.train = os.path.join(self.current_directory, 'input', 'train.csv')
+        self.saved_model = os.path.join(self.current_directory, 'output', 'savedmodel')
         os.mkdir(self.output)
 
     def tearDown(self):

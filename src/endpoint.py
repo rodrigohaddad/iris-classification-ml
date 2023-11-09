@@ -8,9 +8,6 @@ from google.cloud.aiplatform.explain.metadata.tf.v2 import \
 
 load_dotenv()
 
-MODEL = 'projects/1079154697342/locations/southamerica-east1/models/6917054038617882624/operations/3611575739360477184'
-ENDPOINT = 'projects/1079154697342/locations/southamerica-east1/endpoints/7775447164469116928/operations/792322372626546688'
-
 
 class AIEndpoint:
     def __init__(self):
@@ -20,7 +17,8 @@ class AIEndpoint:
 
         # self.explain_params, self.explain_meta = self.get_explain_config()
 
-    def get_explain_config(self):
+    @staticmethod
+    def get_explain_config():
         params = {"sampled_shapley_attribution": {"path_count": 10}}
         explain_params = aiplatform.explain.ExplanationParameters(params)
 
@@ -56,9 +54,3 @@ class AIEndpoint:
         )
 
         return endpoint
-
-
-if __name__ == '__main__':
-    ai_endpoint = AIEndpoint()
-    ai_endpoint.deploy_endpoint(endpoint_name='isis-endpoint')
-

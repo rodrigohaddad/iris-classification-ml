@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from endpoint import AIEndpoint
-from monitoring import Monitoring
-from train import Train
+from src.endpoint import AIEndpoint
+from src.monitoring import Monitoring
+from src.train import Train
 
 
 def pipeline():

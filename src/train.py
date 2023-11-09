@@ -20,8 +20,6 @@ class Train:
             self,
             display_name: str,
             tune_hyperparameters: bool = False,
-            # experiment: str,
-            # experiment_run: Optional[str] = None,
     ) -> None:
         custom_job = {
             "display_name": display_name,
@@ -41,6 +39,7 @@ class Train:
                             f"--train_data_path={os.getenv('TRAIN_DIR')}",
                             f"--output_dir={os.getenv('OUT_DIR')}",
                             f"--epochs={TrainingArgs.epochs}",
+                            f"--batch_size={TrainingArgs.epochs}",
                             f"--lr={TrainingArgs.lr}",
                         ],
                     },
@@ -52,10 +51,10 @@ class Train:
 
         if tune_hyperparameters:
             job = self.add_hyperparameter_tuning(display_name, job)
-        job.run()
+        job.submit()
 
     @staticmethod
-    def add_hyperparameter_tuning(display_name, job):
+    def add_hyperparameter_tuning(display_name: str, job):
         hpt_job = aiplatform.HyperparameterTuningJob(
             display_name=display_name,
             custom_job=job,
@@ -68,10 +67,3 @@ class Train:
         )
 
         return hpt_job
-
-
-if __name__ == '__main__':
-    timestamp_str = datetime.strftime(datetime.now(), '%y%m%d_%H%M%S')
-    train = Train()
-    train.create_custom_job_with_experiment_autologging_sample(display_name=f"iris_{timestamp_str}",
-                                                               tune_hyperparameters=False)
