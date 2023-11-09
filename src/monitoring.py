@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google.cloud.aiplatform import model_monitoring
 import google.cloud.aiplatform as aiplatform
 
-from src.constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
+from constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
 
 load_dotenv()
 
