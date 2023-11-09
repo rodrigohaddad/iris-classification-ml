@@ -17,7 +17,7 @@ jobs:
         uses: google-github-actions/deploy-cloud-functions@v0.1.2
         with:
           credentials: ${{ secrets.GCP_SA_KEY }}
-          name: function-2
+          name: function-1
           description: Test python cloud function # nullable
           project_id: iris-classification-404414
           region: southamerica-east1
