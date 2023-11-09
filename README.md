@@ -8,8 +8,9 @@ SDK, from training to deployment.
 
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Tests](#tests)
+- [Configuration](#configuration)
 - [Usage](#usage)
-
 
 ## Requirements
 
@@ -57,7 +58,6 @@ Execute unit tests:
    python -m unittest
    ```
 
-
 ## Configuration
 
 Provide details on how to configure and authenticate your service, including environment variables, configuration files, and authentication tokens.
@@ -98,10 +98,10 @@ replicas according to traffic.
 * **Monitoring**: create a job to monitor endpoint. Supports skew and drift 
 monitors. It is also able to provide explanations.
 
-
 ## Automatic pipeline deployment
 
 Commits to master trigger test and deployment of the pipeline contained in `src` to a Cloud Function.
+
 ![img3.png](imgs/img3.png)
 
 Cloud Scheduler is set up by using cron notation `* * * * *` to send messages to Pub/Sub and trigger the ML pipeline exeuction:
