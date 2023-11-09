@@ -28,3 +28,4 @@ jobs:
       run: |
         export TESTING=True
         python -m unittest
+        python ./setup.py sdist --formats=gztar
