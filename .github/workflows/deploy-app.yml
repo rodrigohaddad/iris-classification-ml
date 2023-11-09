@@ -31,5 +31,5 @@ jobs:
         source_dir: 'src'
         event_trigger_type: 'providers/cloud.pubsub/eventTypes/topic.publish'
         event_trigger_resource: 'projects/iris-classification-404414/topics/run-cloud-function'
-        timeout: '120'
+        timeout: '600'
         #event_trigger_service:
