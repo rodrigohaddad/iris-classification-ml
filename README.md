@@ -9,9 +9,7 @@ SDK, from training to deployment.
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Requirements
 
@@ -51,7 +49,13 @@ List the prerequisites and dependencies required to use your service, such as:
    pip install -r requirements.txt
    ```
    
-6. Configure yor `.env`.
+6. Configure yor `.env` by using `env` as reference.
+
+## Tests
+Execute unit tests:
+   ```bash
+   python -m unittest
+   ```
 
 
 ## Configuration
@@ -84,7 +88,7 @@ For a complete pipeline execution, simply run:
 python main.py
 ```
 
-By executing `main.py` you will be running the following steps using the Vertex AI pipelines and SDK:
+By executing `main.py` you will be running the following steps using the Vertex AI pipelines and SDK.
 
 From which:
 * **Train**: uses model code as Docker image or library to execute training 
@@ -94,13 +98,42 @@ replicas according to traffic.
 * **Monitoring**: create a job to monitor endpoint. Supports skew and drift 
 monitors. It is also able to provide explanations.
 
-## Automatic execution of pipeline
 
-For periodic train and deployment of the inference endpoint, deploy your `src` pipeline code to a Cloud Function and set up a trigger by a Pub/Sub.
+## Automatic pipeline deployment
+
+Commits to master trigger test and deployment of the pipeline contained in `src` to a Cloud Function.
+![img3.png](imgs/img3.png)
+
+Cloud Scheduler is set up by using cron notation `* * * * *` to send messages to Pub/Sub and trigger the ML pipeline exeuction:
+
+![img2.png](imgs/img2.png)
+
+Then, the pipelined is triggered by the message and exeuction starts.
 
 ![img.png](imgs/img.png)
 
-Configure a Cloud Scheduler using the cron notation `* * * * *`:
 
-![img.png](imgs/img2.png)
+
+## Inference results
+
+Currently, there are two ways of applying the model to your test dataset. Load the model and apply input to the trained model:
+```python
+import tensorflow as tf
+import numpy as np
+
+model = tf.saved_model.load(PATH_SAVED_MODEL)
+r = model(
+        np.array([
+    [5.1, 3.5, 1.4, 0.2]
+], dtype=np.float32)
+)
+```
+
+Or, use `gcloud` to send internal GCP `json` requests to Vertex AI endpoint:
+```bash
+%%bash
+gcloud ai endpoints predict $ENDPOINT_RESOURCENAME \
+    --region=$REGION \
+    --json-request=test_req.json
+```
 
