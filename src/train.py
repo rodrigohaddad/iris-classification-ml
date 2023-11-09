@@ -10,11 +10,6 @@ load_dotenv()
 
 
 class Train:
-    def __init__(self):
-        self.project = os.getenv('PROJECT')
-        self.location = os.getenv('REGION')
-        aiplatform.init(project=self.project, location=self.location)
-
     def create_custom_job(
             self,
             display_name: str,

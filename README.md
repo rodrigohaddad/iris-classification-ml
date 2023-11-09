@@ -3,8 +3,9 @@
 # Iris Classification ML
 
 Iris Classification ML is a machine learning pipeline built on 
-Google Cloud Platform. The pipeline is mostly build using Vertex AI
-SDK, from training to deployment.
+Google Cloud Platform. The pipeline uses Vertex AI SDK to train,
+create an endpoint and monitor the classification results of a Neural Network 
+applied to the Iris dataset.
 
 ## Table of Contents
 
@@ -16,11 +17,11 @@ SDK, from training to deployment.
 
 ## Requirements
 
-List the prerequisites and dependencies required to use your service, such as:
+To fully use this pipeline, a Google Cloud account with billing active is necessary.
 
+- A Google Cloud project
 - Python 3.9+
 - Google Cloud SDK (gcloud)
-- A Google Cloud project
 
 ## Installation
 
@@ -62,8 +63,6 @@ Execute unit tests:
 
 ## Configuration
 
-Provide details on how to configure and authenticate your service, including environment variables, configuration files, and authentication tokens.
-
 ### Environment Variables
 
 - `GOOGLE_APPLICATION_CREDENTIALS`: Path to your Google Cloud service account key JSON file.
@@ -82,35 +81,41 @@ region: us-central1
 
 Ensure you are authenticated with the Google Cloud SDK using `gcloud auth application-default login`.
 
-## Usage
+## Local usage
 
-For a complete pipeline execution, simply run:
+For a complete local pipeline execution, simply run:
 
 ```bash
 python main.py
 ```
 
-By executing `main.py` you will be running the following steps using the Vertex AI pipelines and SDK.
-
-From which:
-* **Train**: uses model code as Docker image or library to execute training 
-steps with entry hyperparameters or with hyperparameter tuning in a remote cloud machine.
-* **Deploy endpoint**: deploy your previously trained model to an online endpoint. Configure
+By executing `main.py` you will be running the following steps using the Vertex AI pipelines and SDK. From which:
+* **Train**: packages model code as Docker image or package to execute training in a remote cloud machine
+ with pre-established entry hyperparameters or with hyperparameter tuning.
+* **Deploy endpoint**: deploys your previously trained model to an online endpoint. Configure
 replicas according to traffic.
-* **Monitoring**: create a job to monitor endpoint. Supports skew and drift 
-monitors. It is also able to provide explanations.
+* **Monitoring**: creates a job to monitor endpoint. Supports skew and drift 
+monitoring. It is also able to provide explanations.
 
 ## Automatic pipeline deployment
 
-Commits to master trigger test and deployment of the pipeline contained in `src` to a Cloud Function.
+Commits to master trigger:
+- Unit tests.
+- Deployment of model package to Cloud Storage.
+- Deployment of the pipeline contained in `src` to a Cloud Function.
+
+After model package is deployed to Storage and pipeline code is deployed to a CF, you
+may want to trigger the pipeline manually by forcing the execution of the Cloud Scheduler.
+If you choose to wait, next pipeline run will take place on the chosen cron time.
+
 
 ![img3.png](imgs/img3.png)
 
-Cloud Scheduler is set up by using cron notation `* * * * *` to send messages to Pub/Sub and trigger the ML pipeline exeuction:
+Cloud Scheduler is set up by using cron notation `* * * * *` to send messages to Pub/Sub and trigger the ML pipeline execution:
 
 ![img2.png](imgs/img2.png)
 
-Then, the pipelined is triggered by the message and exeuction starts.
+Then, the pipeline is triggered by the message and execution starts.
 
 ![img.png](imgs/img.png)
 

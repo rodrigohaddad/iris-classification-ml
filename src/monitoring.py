@@ -11,9 +11,6 @@ load_dotenv()
 
 class Monitoring:
     def __init__(self, endpoint=None):
-        self.project = os.getenv('PROJECT')
-        self.location = os.getenv('REGION')
-        aiplatform.init(project=self.project, location=self.location)
         self.endpoint = endpoint
         if not endpoint:
             endpoint_name = os.getenv('ENDPOINT')
@@ -58,14 +55,7 @@ class Monitoring:
             schedule_config=schedule_config,
             alert_config=alerting_config,
             objective_configs=objective_config,
-            project=self.project,
-            location=self.location,
             endpoint=self.endpoint,
         )
 
         return job
-
-
-# if __name__ == "__monitoring__":
-#     monitoring = Monitoring()
-#     monitoring.config_monitoring(target='iris')
