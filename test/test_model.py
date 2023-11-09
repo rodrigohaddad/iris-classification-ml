@@ -15,9 +15,10 @@ class TestModelCase(unittest.TestCase):
         self.eval = os.path.join(self.current_directory, 'input', 'eval.csv')
         self.train = os.path.join(self.current_directory, 'input', 'train.csv')
         self.saved_model = os.path.join(self.current_directory, 'output', 'savedmodel')
-
-        shutil.rmtree(self.output)
         os.mkdir(self.output)
+
+    def tearDown(self):
+        shutil.rmtree(self.output)
 
     def test_model(self):
         model = Model({'lr': 0.001,
@@ -43,7 +44,3 @@ class TestModelCase(unittest.TestCase):
 
         r = np.argmax(r, axis=-1)
         assert (r & [2, 2, 2, 2]).all()
-
-
-if __name__ == '__main__':
-    unittest.main()
