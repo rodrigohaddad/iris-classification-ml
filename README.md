@@ -1,3 +1,5 @@
+[![Test and Deploy](https://github.com/rodrigohaddad/iris-classification-ml/actions/workflows/deploy-app.yml/badge.svg)](https://github.com/rodrigohaddad/iris-classification-ml/actions/workflows/deploy-app.yml)
+
 # Iris Classification ML
 
 Iris Classification ML is a machine learning pipeline built on 
