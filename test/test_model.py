@@ -8,7 +8,7 @@ import tensorflow as tf
 from trainer.model import Model
 
 
-class ModelTestCase(unittest.TestCase):
+class TestModelCase(unittest.TestCase):
     def setUp(self):
         self.current_directory = os.getcwd()
         self.output = os.path.join(self.current_directory, 'output')
@@ -19,7 +19,7 @@ class ModelTestCase(unittest.TestCase):
         shutil.rmtree(self.output)
         os.mkdir(self.output)
 
-    def test_total_same_name_per_country(self):
+    def test_model(self):
         model = Model({'lr': 0.001,
                        'epochs': 15,
                        'batch_size': 20,
@@ -43,3 +43,7 @@ class ModelTestCase(unittest.TestCase):
 
         r = np.argmax(r, axis=-1)
         assert (r & [2, 2, 2, 2]).all()
+
+
+if __name__ == '__main__':
+    unittest.main()

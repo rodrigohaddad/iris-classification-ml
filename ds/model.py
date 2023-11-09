@@ -40,7 +40,7 @@ class Model:
 
     def build_nn(self) -> models:
         nn = tf.keras.Sequential([
-            layers.Input(shape=(4, 1)),
+            layers.Input(shape=(4,)),
             layers.Dense(128, activation='relu'),
             layers.Flatten(),
             layers.Dense(128, activation='relu'),
