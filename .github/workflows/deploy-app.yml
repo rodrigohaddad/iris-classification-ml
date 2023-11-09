@@ -24,7 +24,7 @@ jobs:
     - id: 'deploy'
       uses: 'google-github-actions/deploy-cloud-functions@v1'
       with:
-        name: 'iris-cloud'
+        name: 'pipeline'
         runtime: 'python39'
         project_id: 'iris-classification-404414'
         region: 'southamerica-east1'
