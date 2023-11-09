@@ -10,11 +10,7 @@ load_dotenv()
 
 
 class Train:
-    def create_custom_job(
-            self,
-            display_name: str,
-            tune_hyperparameters: bool = False,
-    ) -> None:
+    def create_custom_job(self, display_name: str, tune_hyperparameters: bool = False) -> None:
         custom_job = {
             "display_name": display_name,
             "staging_bucket": os.getenv('STAGING_DIR'),
@@ -48,7 +44,7 @@ class Train:
         job.run()
 
     @staticmethod
-    def add_hyperparameter_tuning(display_name: str, job):
+    def add_hyperparameter_tuning(display_name: str, job) -> aiplatform.HyperparameterTuningJob:
         hpt_job = aiplatform.HyperparameterTuningJob(
             display_name=display_name,
             custom_job=job,

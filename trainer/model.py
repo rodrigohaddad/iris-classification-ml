@@ -1,9 +1,12 @@
 import logging
 import os
+from typing import Tuple
+
 import numpy as np
 import tensorflow as tf
 import pandas as pd
 from keras import callbacks, layers
+from keras.src.callbacks import History
 
 logging.info(tf.version.VERSION)
 
@@ -19,12 +22,13 @@ class Model:
         self.train_data_path = hparams['train_data_path']
 
     @staticmethod
-    def normalize_column(column):
+    def normalize_column(column: pd.Series) -> pd.Series:
         min_val = column.min()
         max_val = column.max()
         return (column - min_val) / (max_val - min_val)
 
-    def transform(self, trainds, evalds):
+    def transform(self, trainds: pd.DataFrame,
+                  evalds: pd.DataFrame) -> (Tuple, Tuple):
         classes, y_train = np.unique(trainds['class'], return_inverse=True)
         mapping_dict = {string: i for i, string in enumerate(sorted(classes))}
         y_val = evalds['class'].map(mapping_dict)
@@ -40,7 +44,7 @@ class Model:
 
         return (x_train, x_val), (y_train, y_val)
 
-    def build_nn(self):
+    def build_nn(self) -> tf.keras.Sequential:
         nn = tf.keras.Sequential([
             layers.Input(shape=(4,)),
             layers.Dense(128, activation='relu'),
@@ -55,7 +59,7 @@ class Model:
                    metrics=['accuracy'])
         return nn
 
-    def train_and_evaluate(self):
+    def train_and_evaluate(self) -> History:
         model_export_path = os.path.join(self.output_dir, "savedmodel")
         checkpoint_path = os.path.join(self.output_dir, "checkpoints")
         tensorboard_path = os.path.join(self.output_dir, "tensorboard")

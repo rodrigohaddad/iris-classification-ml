@@ -1,8 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from google.cloud.aiplatform import model_monitoring
-import google.cloud.aiplatform as aiplatform
+from google.cloud.aiplatform import model_monitoring, Endpoint, ModelDeploymentMonitoringJob
 
 from constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
 
@@ -10,13 +9,13 @@ load_dotenv()
 
 
 class Monitoring:
-    def __init__(self, endpoint=None):
+    def __init__(self, endpoint: Endpoint = None):
         self.endpoint = endpoint
         if not endpoint:
             endpoint_name = os.getenv('ENDPOINT')
-            self.endpoint = aiplatform.Endpoint(endpoint_name=endpoint_name)
+            self.endpoint = Endpoint(endpoint_name=endpoint_name)
 
-    def config_monitoring(self, target: str):
+    def config_monitoring(self, target: str) -> ModelDeploymentMonitoringJob:
         skew_config = model_monitoring.SkewDetectionConfig(
             data_source=f"{os.getenv('TRAIN_DIR')}",
             skew_thresholds=THRESHOLDS,
@@ -49,7 +48,7 @@ class Monitoring:
         )
 
         # Create the monitoring job.
-        job = aiplatform.ModelDeploymentMonitoringJob.create(
+        job = ModelDeploymentMonitoringJob.create(
             display_name='monitoring',
             logging_sampling_strategy=random_sampling,
             schedule_config=schedule_config,
