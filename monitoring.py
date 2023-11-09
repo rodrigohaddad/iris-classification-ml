@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google.cloud.aiplatform import model_monitoring
 import google.cloud.aiplatform as aiplatform
 
-from constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
+from src.constants import THRESHOLDS, LOG_SAMPLE_RATE, MONITOR_INTERVAL
 
 load_dotenv()
 
@@ -66,6 +66,6 @@ class Monitoring:
         return job
 
 
-# if __name__ == "__monitoring__":
-#     monitoring = Monitoring()
-#     monitoring.config_monitoring(target='iris')
+if __name__ == "__monitoring__":
+    monitoring = Monitoring()
+    monitoring.config_monitoring(target='iris')

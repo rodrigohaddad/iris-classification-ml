@@ -18,5 +18,3 @@ def pipeline():
     monitoring.config_monitoring(target='iris')
 
 
-if __name__ == '__main__':
-    pipeline()

@@ -13,7 +13,11 @@ def pipeline(cloud_event):
                             tune_hyperparameters=False)
 
     ai_endpoint = AIEndpoint()
-    ai_endpoint.deploy_endpoint(endpoint_name='isis-endpoint')
+    endpoint = ai_endpoint.deploy_endpoint(endpoint_name='isis-endpoint')
 
-    monitoring = Monitoring()
+    monitoring = Monitoring(endpoint)
     monitoring.config_monitoring(target='iris')
+
+
+if __name__ == '__main__':
+    pipeline("")
