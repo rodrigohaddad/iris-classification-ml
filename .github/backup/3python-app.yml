@@ -27,7 +27,3 @@ jobs:
         project_id: 'iris-classification-404414'
         region: 'southamerica-east1'
         source_dir: 'src'
-
-    # Example of using the output
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
