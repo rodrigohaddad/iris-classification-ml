@@ -19,6 +19,7 @@ THRESHOLDS = {
     "petal width": DEFAULT_THRESHOLD_VALUE,
 }
 
+
 class Monitoring:
     def __init__(self, endpoint=None):
         self.project = os.getenv('PROJECT')

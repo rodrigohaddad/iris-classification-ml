@@ -11,7 +11,6 @@ from trainer.model import Model
 class TestModelCase(unittest.TestCase):
     def setUp(self):
         self.current_directory = os.getcwd()
-        print(self.current_directory)
         self.output = os.path.join(self.current_directory, 'test', 'output')
         self.eval = os.path.join(self.current_directory, 'test', 'input', 'eval.csv')
         self.train = os.path.join(self.current_directory, 'test', 'input', 'train.csv')
