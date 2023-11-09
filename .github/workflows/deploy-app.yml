@@ -12,7 +12,7 @@ jobs:
       # checkout to our repository so we have access to the source code
       - uses: actions/checkout@v2
 
-      # the actual deployment to google
+      # the actual deployment to googlee
       - name: Cloud Functions Deploy
         uses: google-github-actions/deploy-cloud-functions@v0.1.2
         with:
