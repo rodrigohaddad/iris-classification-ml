@@ -15,7 +15,7 @@ class Train:
         self.location = os.getenv('REGION')
         aiplatform.init(project=self.project, location=self.location)
 
-    def create_custom_job_with_experiment_autologging_sample(
+    def create_custom_job(
             self,
             display_name: str,
             tune_hyperparameters: bool = False,
@@ -50,7 +50,7 @@ class Train:
 
         if tune_hyperparameters:
             job = self.add_hyperparameter_tuning(display_name, job)
-        job.submit()
+        job.run()
 
     @staticmethod
     def add_hyperparameter_tuning(display_name: str, job):
