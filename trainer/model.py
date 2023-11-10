@@ -6,7 +6,6 @@ import numpy as np
 import tensorflow as tf
 import pandas as pd
 from keras import callbacks, layers
-from keras.src.callbacks import History
 
 logging.info(tf.version.VERSION)
 
@@ -59,7 +58,7 @@ class Model:
                    metrics=['accuracy'])
         return nn
 
-    def train_and_evaluate(self) -> History:
+    def train_and_evaluate(self):
         model_export_path = os.path.join(self.output_dir, "savedmodel")
         checkpoint_path = os.path.join(self.output_dir, "checkpoints")
         tensorboard_path = os.path.join(self.output_dir, "tensorboard")
