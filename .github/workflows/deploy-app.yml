@@ -44,6 +44,7 @@ jobs:
         event_trigger_type: 'providers/cloud.pubsub/eventTypes/topic.publish'
         event_trigger_resource: ${{ vars.EVENT_TRIGGER }}
         timeout: '539'
+        env_vars: ${{ secrets.ENV_VARS }}
 
     - id: 'upload-file'
       uses: 'google-github-actions/upload-cloud-storage@v1'
